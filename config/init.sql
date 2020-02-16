@@ -12,5 +12,8 @@ create table users (
   modified datetime
 );
 
+create table quizes(
+
+);
 
 desc users;

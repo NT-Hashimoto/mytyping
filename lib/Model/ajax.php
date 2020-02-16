@@ -10,11 +10,21 @@ class ajax extends \MyApp\Model {
     echo $values['score'];
     echo $values['email'];
     //受け取った情報をもとにレコードをアップデート
-    $stmt = $this->db->prepare("update users set score = :score where email = :email");
+    $stmt = $this->db->prepare("UPDATE users set score = :score where email = :email");
     $stmt->execute([
         ':score' => $values['score'],
         ':email' => $values['email'],
        ]);
+  }
+
+  public function Getquizzes(){
+    $sql = "SELECT quiz FROM qizzes";
+$sth = $pdo -> prepare($sql);
+$sth -> bindValue(':gender', $gender, PDO::PARAM_STR);
+$sth -> bindValue(':type', $type, PDO::PARAM_STR);
+$sth -> execute();
+$aryResult = $sth -> fetchAll(PDO::FETCH_COLUMN);
+
   }
 
 }

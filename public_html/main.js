@@ -80,15 +80,16 @@
   function showResult() {
     const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
     let scoreobject={"score":score};
+    //score送信
     $.post(
       "index.php",
     scoreobject,
-    function(data){
-      alert(data); //結果をアラートで表示
-      }
+    // function(data){
+    //   alert(data); //結果をアラートで表示
+    //   }
     );
     
-    //alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
+    alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
 
   }
 
@@ -108,6 +109,31 @@
     scoreLabel.textContent = score;
     missLabel.textContent = miss;
     word = words[Math.floor(Math.random() * words.length)];
+    $.get(
+      "index.php",
+    {"isplaying":"true"},
+    );
+
+    $.ajax({
+      url: 'index.php',
+      type: 'GET',
+      /* json形式で受け取るためdataTypeを変更 */
+      dataType: 'json',
+      data : {
+          "isplaying" : "true",
+      }
+    }).done(function(data){
+      /* 通信成功時 */
+      alert('通信成功');
+      // $.each(data, function(key, value){
+      //     html_response += '<li>' + value + '</li>';
+      // });
+      
+    }).fail(function(data){
+      /* 通信失敗時 */
+      alert('通信失敗！');
+              
+    });
 
   
 
@@ -134,6 +160,7 @@
       score++;
       scoreLabel.textContent = score;
     } else {
+      e.key.style.coler="red";
       miss++;
       missLabel.textContent = miss;
     }
