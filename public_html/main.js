@@ -4,6 +4,7 @@
   
   //--宣言--
   //単語集
+  
   const words = [
     'apple',
     'apricot',
@@ -31,9 +32,10 @@
   let loc;//文字の位置
   let score;//正解数
   let miss;//不正解数
-  const timeLimit = 2 * 1000;
+  const timeLimit = 3 * 1000;
   let startTime;
   let isPlaying = false;
+  let quiz =[];
 
   // 要素のid取得
   const target = document.getElementById('target');
@@ -51,7 +53,20 @@
       placeholder += '_';
     }
     target.textContent = placeholder + word.substring(loc);
+    
+    
   }
+
+  function colorupdateTarget() {
+    let placeholder = '';
+    for (let i = 0; i < loc; i++) {
+      placeholder += '_';
+    }
+    target.innerHTML =placeholder+"<span style='color:red;'>" +word.substring(loc,loc+1)+"</span>" + word.substring(loc+1);
+
+  }
+
+  
 
   //タイマー
   function updateTimer() {
@@ -82,11 +97,12 @@
     let scoreobject={"score":score};
     //score送信
     $.post(
-      "index.php",
-    scoreobject,
-    // function(data){
-    //   alert(data); //結果をアラートで表示
-    //   }
+      "../lib/Model/UpdateScore.php",
+      scoreobject,
+      // 'json',
+      function(data){
+       alert(data); //結果をアラートで表示
+       }
     );
     
     alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
@@ -108,38 +124,36 @@
     miss = 0;
     scoreLabel.textContent = score;
     missLabel.textContent = miss;
-    word = words[Math.floor(Math.random() * words.length)];
+    
+
+    // $.post(
+    //   "index.php",
+    //   {"isplaying":"true"},
+    //   function(data){
+    //   console.log(data); //結果をアラートで表示
+    //   }
+    // );
+    
     $.get(
-      "index.php",
-    {"isplaying":"true"},
-    );
+      "../lib/Model/Getquiz.php",
+      {"isplaying" : "true"},
+      "json"
+    ).done(function(data){
+     
+      quiz=data.slice();
+      console.log(quiz);
+      console.log(data);
 
-    $.ajax({
-      url: 'index.php',
-      type: 'GET',
-      /* json形式で受け取るためdataTypeを変更 */
-      dataType: 'json',
-      data : {
-          "isplaying" : "true",
-      }
-    }).done(function(data){
-      /* 通信成功時 */
-      alert('通信成功');
-      // $.each(data, function(key, value){
-      //     html_response += '<li>' + value + '</li>';
-      // });
-      
-    }).fail(function(data){
-      /* 通信失敗時 */
-      alert('通信失敗！');
-              
-    });
+      word = quiz[Math.floor(Math.random() * quiz.length)];  
 
-  
+      target.textContent = word;
+      startTime = Date.now();
+      updateTimer();
 
-    target.textContent = word;
-    startTime = Date.now();
-    updateTimer();
+   }).fail(function(XMLHttpRequest, textStatus, errorThrown){
+       alert(errorThrown);
+   })
+
 
   });
 
@@ -153,44 +167,18 @@
     if (e.key === word[loc]) {
       loc++;
       if (loc === word.length) {
-        word = words[Math.floor(Math.random() * words.length)];
+        word = quiz[Math.floor(Math.random() * quiz.length)];
         loc = 0;
       }
       updateTarget();
       score++;
       scoreLabel.textContent = score;
     } else {
-      e.key.style.coler="red";
+      colorupdateTarget();
       miss++;
       missLabel.textContent = miss;
     }
   });
-
-  //score送信
-   //.sampleをクリックしてajax通信を行う
-//    $('.sample_btn').click(function(){
-//     $.ajax({
-//         url: 'index.php',
-//         type: 'POST',
-//         /* json形式で受け取るためdataTypeを変更 */
-//         dataType: 'json',
-//         data : {
-//             score : '100',
-//         }
-//     }).done(function(data){
-//         /* 通信成功時 */
-//         var html_response = '<ul>';
-//         //json形式で受け取った配列を.each()で繰り返し、ul > liリストにする
-//         $.each(data, function(key, value){
-//             html_response += '<li>' + value + '</li>';
-//         });
-//         html_response += '</ul>';
-//         $('.result').html(html_response); //取得したHTMLを.resultに反映
-        
-//     }).fail(function(data){
-//         /* 通信失敗時 */
-//         alert('通信失敗！');
-                
-//     });
-// });
 }
+
+function a(){

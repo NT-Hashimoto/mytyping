@@ -18,8 +18,10 @@ $app->run();
   <title>Home</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  
 </head>
 <body>
+
   <p id="target">click to start</p>
   <p class="info">
     Letter count: <span id="score">0</span>,
@@ -32,8 +34,6 @@ $app->run();
        <input type="submit" value="Log Out">
     </form>
   </div>
-
-  <input type="button" class="sample_btn" value="ajax通信で取得する">
 
   <script src="main.js"></script>
 

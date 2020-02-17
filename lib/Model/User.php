@@ -44,16 +44,4 @@ class User extends \MyApp\Model {
     return $user;
   }
 
-  //score
-  public function inputscore($values) {
-    //受け取った情報をもとにレコードを追加
-    $stmt = $this->db->prepare("insert into users (score) values (:score");
-       $res = $stmt->execute([
-         ':score' => $values['score'],
-       ]);
-       echo json_encode($res);
-       if ($res === false) {
-         throw new \MyApp\Exception\DuplicateEmail();
-       }
-      }
 }
