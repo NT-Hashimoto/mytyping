@@ -74,12 +74,10 @@
       "../lib/Model/UpdateScore.php",
       scoreobject,
       function(data){
-       comment.textContent=data; //結果をアラートで表示
-       console.log(data);
+       comment.innerHTML=data; //結果をアラートで表示
+      //  `${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!<br>`+
        }
-    );
-    
-    // alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
+    );//end post
 
   }
 
@@ -107,11 +105,7 @@
     ).done(function(data){
      
       quiz=data.slice();
-      console.log(quiz);
-      console.log(data);
-
       word = quiz[Math.floor(Math.random() * quiz.length)];  
-
       target.textContent = word;
       startTime = Date.now();
       updateTimer();

@@ -28,7 +28,7 @@ $app->run();
     Miss count: <span id="miss">0</span>,
     Time left: <span id="timer">0.00</span>
   </p>
-  <p id="comment">hi</p>
+  <p id="comment"></p>
 
   <div id="container">
     <form action="logout.php" method="post" id="logout">
