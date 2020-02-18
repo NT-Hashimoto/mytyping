@@ -3,31 +3,6 @@
 {
   
   //--宣言--
-  //単語集
-  
-  const words = [
-    'apple',
-    'apricot',
-    'strawberry',
-    'persimmon',
-    'Chinese quince',
-    'kiwi fruit',
-    'kumquat',
-    'cherry',
-    'pomegranate',
-    'watermelon',
-    'plum',
-    'pear',
-    'pineapple',
-    'banana',
-    'loquat',
-    'grape',
-    'mandarin',
-    'melon',
-    'peach',
-    
-  ];
-
   let word;//現在の単語
   let loc;//文字の位置
   let score;//正解数
@@ -53,7 +28,6 @@
       placeholder += '_';
     }
     target.textContent = placeholder + word.substring(loc);
-    
     
   }
 
@@ -94,18 +68,18 @@
 
   function showResult() {
     const accuracy = score + miss === 0 ? 0 : score / (score + miss) * 100;
-    let scoreobject={"score":score};
     //score送信
+    let scoreobject={"score":score};
     $.post(
       "../lib/Model/UpdateScore.php",
       scoreobject,
-      // 'json',
       function(data){
-       alert(data); //結果をアラートで表示
+       comment.textContent=data; //結果をアラートで表示
+       console.log(data);
        }
     );
     
-    alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
+    // alert(`${score} letters, ${miss} misses, ${accuracy.toFixed(2)}% accuracy!`);
 
   }
 
@@ -125,15 +99,7 @@
     scoreLabel.textContent = score;
     missLabel.textContent = miss;
     
-
-    // $.post(
-    //   "index.php",
-    //   {"isplaying":"true"},
-    //   function(data){
-    //   console.log(data); //結果をアラートで表示
-    //   }
-    // );
-    
+    //クイズの取得
     $.get(
       "../lib/Model/Getquiz.php",
       {"isplaying" : "true"},
